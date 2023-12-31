@@ -6,6 +6,7 @@ import 'package:superchat/pages/sign_in_page.dart';
 import 'package:superchat/widgets/stream_listener.dart';
 
 import '../bloc/contact_bloc.dart';
+import 'chat_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -47,6 +48,13 @@ class HomePage extends StatelessWidget {
                       final contact = state.contacts[index];
                       return ListTile(
                         title: Text(contact.username),
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => ChatPage(contact: contact),
+                            ),
+                          );
+                        },
                       );
                     },
                   );
