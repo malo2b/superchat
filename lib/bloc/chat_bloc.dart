@@ -16,6 +16,13 @@ class ChatLoading extends ChatEvent {}
 // When chat is loaded
 class ChatLoaded extends ChatEvent {}
 
+// When a message is received
+class ChatMessageReceived extends ChatEvent {
+  final ChatMessageModel message;
+
+  ChatMessageReceived(this.message);
+}
+
 // When a message is sent
 class ChatMessageSent extends ChatEvent {
   final String message;
@@ -47,6 +54,28 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       try {
         final messages = await getMessages(userId, contact.id);
         emit(ChatLoadedState(messages));
+        add(ChatLoaded());
+      } catch (e) {
+        print(e);
+      }
+    });
+
+    // When chat is loaded
+    on<ChatLoaded>((event, emit) async {
+      try {
+        print('Chat loaded');
+        // Setup an asynchronous listener to listen for new messages sended and recieved in real time
+        // FirebaseFirestore.instance
+        //     .collection('messages')
+        //     .where('from', isEqualTo: userId)
+        //     .where('to', isEqualTo: contact.id)
+        //     .where('timestamp', isGreaterThan: DateTime.now())
+        //     .snapshots()
+        //     .listen((event) {
+        //   for (var doc in event.docs) {
+        //     add(ChatMessageReceived(ChatMessageModel.fromDocument(doc)));
+        //   }
+        // });
       } catch (e) {
         print(e);
       }
@@ -63,7 +92,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   // Get messages
-  Future<List<ChatMessageModel>> getMessages(String userId, String contactId) async {
+  Future<List<ChatMessageModel>> getMessages(
+      String userId, String contactId) async {
     try {
       var sendedMessages = await FirebaseFirestore.instance
           .collection('messages')
@@ -76,8 +106,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           .where('to', isEqualTo: userId)
           .get();
       var messages = <ChatMessageModel>[];
-      messages.addAll(sendedMessages.docs.map((e) => ChatMessageModel.fromDocument(e)));
-      messages.addAll(receivedMessages.docs.map((e) => ChatMessageModel.fromDocument(e)));
+      messages.addAll(
+          sendedMessages.docs.map((e) => ChatMessageModel.fromDocument(e)));
+      messages.addAll(
+          receivedMessages.docs.map((e) => ChatMessageModel.fromDocument(e)));
       // Sort messages by date reverse
       messages.sort((a, b) => b.date.compareTo(a.date));
       return messages;
