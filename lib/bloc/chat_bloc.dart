@@ -16,6 +16,13 @@ class ChatLoading extends ChatEvent {}
 // When chat is loaded
 class ChatLoaded extends ChatEvent {}
 
+// When a message is sent
+class ChatMessageSent extends ChatEvent {
+  final String message;
+
+  ChatMessageSent(this.message);
+}
+
 // State
 
 abstract class ChatState {}
@@ -32,13 +39,23 @@ class ChatLoadedState extends ChatState {
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final Contact contact;
+  final userId = FirebaseAuth.instance.currentUser!.uid;
 
   ChatBloc(this.contact) : super(ChatInitialState()) {
+    // When chat is loading
     on<ChatLoading>((event, emit) async {
-      final userId = FirebaseAuth.instance.currentUser!.uid;
       try {
         final messages = await getMessages(userId, contact.id);
         emit(ChatLoadedState(messages));
+      } catch (e) {
+        print(e);
+      }
+    });
+
+    // When a message is sent
+    on<ChatMessageSent>((event, emit) async {
+      try {
+        await sendMessage(event.message);
       } catch (e) {
         print(e);
       }
@@ -66,6 +83,20 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     } catch (e) {
       print(e);
       return [];
+    }
+  }
+
+  // Send message
+  Future<void> sendMessage(String message) async {
+    try {
+      await FirebaseFirestore.instance.collection('messages').add({
+        'from': userId,
+        'to': contact.id,
+        'content': message,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+    } catch (e) {
+      print(e);
     }
   }
 }

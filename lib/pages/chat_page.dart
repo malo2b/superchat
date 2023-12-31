@@ -37,10 +37,7 @@ class ChatPage extends StatelessWidget {
                       ),
                     ),
                     const Divider(height: 1),
-                    BottomInputWidget(
-                      textEditingController: TextEditingController(),
-                      onSendPressed: (message) {},
-                    ),
+                    BottomInputWidget(chatBloc: context.read<ChatBloc>()),
                   ],
                 ));
           }

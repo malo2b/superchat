@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:superchat/bloc/chat_bloc.dart';
 
 class BottomInputWidget extends StatelessWidget {
   final TextEditingController textEditingController;
-  final void Function(String) onSendPressed;
+  final ChatBloc chatBloc;
 
-  const BottomInputWidget({
-    Key? key,
-    required this.textEditingController,
-    required this.onSendPressed,
-  }) : super(key: key);
+  BottomInputWidget({super.key, required this.chatBloc}) : textEditingController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +31,9 @@ class BottomInputWidget extends StatelessWidget {
             onPressed: () {
               final message = textEditingController.text.trim();
               if (message.isNotEmpty) {
-                onSendPressed(message);
                 textEditingController.clear();
+                // Send event to bloc
+                chatBloc.add(ChatMessageSent(message));
               }
             },
           ),
