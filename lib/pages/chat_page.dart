@@ -31,7 +31,10 @@ class ChatPage extends StatelessWidget {
                         itemBuilder: (context, index) {
                           final message = state.messages[index];
                           return ListTile(
-                            title: Text(message.message), subtitle: Text(message.date.toDate().toString()),
+                            title: Text(message.message),
+                            subtitle: Text(message.date.toDate().toString()),
+                            trailing: message.from == contact.id ? null : const Icon(Icons.arrow_forward),
+                            leading: message.to != contact.id ? const Icon(Icons.arrow_back) : null,
                           );
                         },
                       ),
