@@ -27,6 +27,7 @@ class ChatPage extends StatelessWidget {
                     const Divider(height: 1),
                     Expanded(
                       child: ListView.builder(
+                        reverse: true,
                         itemCount: state.messages.length,
                         itemBuilder: (context, index) {
                           final message = state.messages[index];

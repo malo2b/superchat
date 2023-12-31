@@ -78,7 +78,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       var messages = <ChatMessageModel>[];
       messages.addAll(sendedMessages.docs.map((e) => ChatMessageModel.fromDocument(e)));
       messages.addAll(receivedMessages.docs.map((e) => ChatMessageModel.fromDocument(e)));
-      messages.sort((a, b) => a.date.compareTo(b.date));
+      // Sort messages by date reverse
+      messages.sort((a, b) => b.date.compareTo(a.date));
       return messages;
     } catch (e) {
       print(e);
