@@ -15,4 +15,13 @@ class ChatMessageModel {
     required this.date,
   });
 
+  factory ChatMessageModel.fromDocument(DocumentSnapshot doc) {
+    return ChatMessageModel(
+      from: doc['from'],
+      to: doc['to'],
+      message: doc['content'],
+      date: doc['timestamp'],
+    );
+  }
+
 }
