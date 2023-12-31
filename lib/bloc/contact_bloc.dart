@@ -17,7 +17,7 @@ abstract class ContactState {}
 class ContactInitialState extends ContactState {}
 
 class ContactsLoadedState extends ContactState {
-  final List<Contact> contacts;
+  final List<ContactModel> contacts;
 
   ContactsLoadedState(this.contacts);
 }
@@ -38,11 +38,11 @@ class ContactBloc extends Bloc<ContactEvent, ContactState> {
     });
   }
 
-  Future<List<Contact>> getContacts(String userId) async {
+  Future<List<ContactModel>> getContacts(String userId) async {
     var data = await FirebaseFirestore.instance
         .collection('users')
         .where('id', isNotEqualTo: userId)
         .get();
-    return data.docs.map((e) => Contact.fromDocument(e)).toList();
+    return data.docs.map((e) => ContactModel.fromDocument(e)).toList();
   }
 }

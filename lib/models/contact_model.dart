@@ -2,14 +2,14 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Contact {
+class ContactModel {
   String id;
   String username;
 
-  Contact({required this.id, required this.username});
+  ContactModel({required this.id, required this.username});
 
-  factory Contact.fromDocument(DocumentSnapshot doc) {
-    return Contact(
+  factory ContactModel.fromDocument(DocumentSnapshot doc) {
+    return ContactModel(
       id: doc['id'],
       username: doc['displayName'],
     );

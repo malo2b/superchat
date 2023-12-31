@@ -6,7 +6,7 @@ import '../widgets/chat/bottom_input_widget.dart';
 import '../bloc/chat_bloc.dart';
 
 class ChatPage extends StatelessWidget {
-  final Contact contact;
+  final ContactModel contact;
 
   const ChatPage({Key? key, required this.contact}) : super(key: key);
 

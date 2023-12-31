@@ -38,7 +38,7 @@ class ChatLoadedState extends ChatState {
 // Bloc
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
-  final Contact contact;
+  final ContactModel contact;
   final userId = FirebaseAuth.instance.currentUser!.uid;
 
   ChatBloc(this.contact) : super(ChatInitialState()) {
