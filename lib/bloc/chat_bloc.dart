@@ -68,18 +68,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
     // When chat is loaded
     on<ChatLoaded>((event, emit) async {
-      try {
-        // Start listening to messages
-        messagesSubscription?.cancel();
-        messagesSubscription = getStreamedMessages(userId, contact.id).listen((messages) {
-          if (messages != null) {
-            // ignore: invalid_use_of_visible_for_testing_member
-            emit(ChatLoadedState(messages as List<ChatMessageModel>));
-          }
-        });
-      } catch (e) {
-        print(e);
-      }
+      print('Chat loaded');
     });
     // messagesSubscription = getStreamedMessages(userId, contact.id).listen((messages) {
     //   if (messages != null) {
