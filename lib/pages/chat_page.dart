@@ -19,8 +19,7 @@ class ChatPage extends StatelessWidget {
           if (state is ChatLoadedState) {
             return Scaffold(
                 appBar: AppBar(
-                  title: Text(
-                      'Chat with ${contact.username}'),
+                  title: Text('Chat with ${contact.username}'),
                 ),
                 body: Column(
                   children: [
@@ -34,8 +33,9 @@ class ChatPage extends StatelessWidget {
                           return ListTile(
                             title: Text(message.message),
                             subtitle: Text(message.date.toDate().toString()),
-                            trailing: message.from == contact.id ? null : const Icon(Icons.arrow_forward),
-                            leading: message.to != contact.id ? const Icon(Icons.arrow_back) : null,
+                            leading: message.to == contact.id
+                                ? const Icon(Icons.arrow_forward_ios)
+                                : const Icon(Icons.arrow_back_ios),
                           );
                         },
                       ),
